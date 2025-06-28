@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Page</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden; /* Hide overflow to prevent scrollbars from the cursor effect */
+      cursor: auto; /* Keep the default cursor visible */
+    }
+
+    .login-card {
+      display: flex;
+      width: 800px;
+      height: 450px; /* Original height for login page */
+      background-color: #2f2f2f;
+      box-shadow: 0 0 30px 5px #9d00ff;
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      z-index: 2; /* Ensure the login card is above the cursor effect */
+    }
+
+    .left {
+      flex: 1;
+      background-color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .right {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background-color: #2f2f2f;
+    }
+
+    .right h2 {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px; /* Original margin for login page */
+      font-size: 32px;
+    }
+
+    .input-field {
+      margin-bottom: 20px; /* Original margin for login page */
+    }
+
+    .input-field input {
+      width: 100%;
+      padding: 15px;
+      border-radius: 8px;
+      border: none;
+      background-color: #1f1f1f;
+      color: white;
+      font-size: 16px;
+    }
+
+    .input-field input::placeholder {
+      color: #999;
+    }
+
+    .form-btn { /* Using the more generic class name now */
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      background-color: #9d00ff;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .form-btn:hover {
+      background-color: #c833ff;
+    }
+
+    .form-btn:focus { /* Add a focus style for accessibility */
+      
+      outline: 2px solid #c833ff;
+      outline-offset: 3px;
+    }
+
+    .form-link {
+      text-align: center;
+      margin-top: 20px; /* Space above the link */
+      font-size: 14px;
+    }
+
+    .form-link a {
+      color: #9d00ff; /* Link color */
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .form-link a:hover {
+      color: #c833ff; /* Link hover color */
+      text-decoration: underline;
+    }
+
+    /* Cursor effect styles (identical to the last version) */
+    .cursor-glow {
+      position: fixed;
+      width: 60vh;
+      height: 60vh;
+      background-color: #000;
+      border-radius: 50%;
+      opacity: 0;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.02s linear;
+      filter: blur(80px);
+      z-index: 1;
+      background-image: radial-gradient(circle, #9d00ff 0%, #9d00ffbb 30%, transparent 70%);
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="left">
+      <img src="GPTLogo.png" alt="GPT Logo" width="350" height="350">
+    </div>
+    <div class="right">
+      <h2>Login</h2>
+      <form id="login-form">
+        <div class="input-field">
+          <input type="email" placeholder="Email" name="email" />
+        </div>
+        <div class="input-field">
+          <input type="password" placeholder="Password" name="password" />
+        </div>
+        <button type="submit" class="form-btn">Login</button>
+      </form>
+      <div class="form-link">
+        <span style="color: #ccc;">Don't have an account? </span><a href="signup.html">Sign Up</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cursor-glow"></div>
+
+  <script>
+    const cursorGlow = document.querySelector('.cursor-glow');
+    const constantGlowOpacity = '0.2';
+
+    document.addEventListener('mousemove', (e) => {
+      const { clientX: mouseX, clientY: mouseY } = e;
+
+      cursorGlow.style.left = `${mouseX}px`;
+      cursorGlow.style.top = `${mouseY}px`;
+      cursorGlow.style.opacity = constantGlowOpacity;
+    });
+
+    document.addEventListener('mouseleave', () => {
+      cursorGlow.style.opacity = '0';
+    });
+
+    const form = document.getElementById('login-form');
+    const focusableElements = form.querySelectorAll('input, button[type="submit"]');
+
+    focusableElements.forEach((element, index) => {
+      element.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+
+          if (index === focusableElements.length - 1) {
+            element.click();
+          } else {
+            focusableElements[index + 1].focus();
+          }
+        }
+      });
+    });
+
+    const allInputs = form.querySelectorAll('input');
+    allInputs.forEach(input => {
+        input.style.outline = 'none';
+        input.addEventListener('focus', () => {
+            input.style.boxShadow = '0 0 0 2px #c833ff';
+        });
+        input.addEventListener('blur', () => {
+            input.style.boxShadow = 'none';
+        });
+    });
+
+    window.addEventListener('load', () => {
+        if (focusableElements.length > 0) {
+            focusableElements[0].focus();
+        }
+    });
+
+  </script>
+</body>
+</html>
