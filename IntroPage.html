@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixory - Your Digital Gallery for Every Trip</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic Resets & Global Styles */
+        :root {
+            --dark-bg: #000; /* Pure black */
+            --text-color: #f0f0f0;
+            --accent-purple: #9d00ff;
+            --accent-purple-hover: #c833ff;
+            --border-color: rgba(255, 255, 255, 0.15); /* Adjusted for grid visibility */
+            --grid-spacing: 50px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg); /* Solid black base */
+            background-image: radial-gradient(circle at center, rgba(157, 0, 255, 0.05) 0%, transparent 70%); /* Subtle radial gradient */
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            /* Default cursor remains visible, so 'cursor: none;' is removed */
+        }
+
+        /* --- HUGE Custom Cursor (Light Follower) --- */
+        .custom-cursor {
+            width: 50vmax; /* Make it half the size of the viewport's larger dimension */
+            height: 50vmax; /* Keep it square to make a perfect circle with border-radius */
+            background: radial-gradient(circle at center, var(--accent-purple) 0%, transparent 70%); /* Glowing center */
+            border-radius: 50%;
+            position: fixed; /* Stays relative to viewport */
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%); /* Centers the cursor on the mouse pointer */
+            pointer-events: none; /* Ensures it doesn't block clicks */
+            z-index: 9999; /* Always on top */
+            transition: transform 0.1s ease-out, opacity 0.2s ease-out; /* Smooth movement and fade */
+            opacity: 0.15; /* Increased opacity for more visibility, adjust as needed */
+            filter: blur(80px); /* Further blurs the glow for a softer effect */
+        }
+
+        /* --- Global Grid Background --- */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+            background-size: var(--grid-spacing) var(--grid-spacing);
+            z-index: -1;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+        
+        /* --- Navbar --- */
+        .navbar {
+            background-color: var(--dark-bg);
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: var(--accent-purple);
+            text-decoration: none;
+            letter-spacing: -0.05em;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .navbar .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.1rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        .navbar .nav-links a:hover {
+            color: var(--accent-purple-hover);
+            transform: translateY(-2px);
+        }
+        
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: var(--accent-purple);
+            transition: width 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+            background: var(--accent-purple-hover);
+        }
+
+        .navbar .auth-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .navbar .auth-buttons .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .navbar .auth-buttons .btn-login {
+            background-color: transparent;
+            color: var(--accent-purple);
+            border: 2px solid var(--accent-purple);
+        }
+
+        .navbar .auth-buttons .btn-login:hover {
+            background-color: var(--accent-purple);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+        }
+
+        .navbar .auth-buttons .btn-signup {
+            background-color: var(--accent-purple);
+            color: var(--dark-bg);
+            border: 2px solid var(--accent-purple);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+        }
+
+        .navbar .auth-buttons .btn-signup:hover {
+            background-color: var(--accent-purple-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(200, 51, 255, 0.7);
+        }
+
+        /* --- Hero Section --- */
+        .hero-section {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInHero 1s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeInHero {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-section h1 {
+            font-size: 4.5rem;
+            color: var(--accent-purple);
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px rgba(157, 0, 255, 0.7);
+            font-weight: 800;
+        }
+
+        .hero-section p {
+            font-size: 1.8rem;
+            color: var(--text-color);
+            margin-bottom: 2.5rem;
+            max-width: 800px;
+        }
+
+        .hero-section .cta-button {
+            padding: 1.2rem 3rem;
+            background-color: var(--accent-purple);
+            color: var(--dark-bg);
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 25px rgba(157, 0, 255, 0.6);
+            letter-spacing: 0.05em;
+        }
+
+        .hero-section .cta-button:hover {
+            background-color: var(--accent-purple-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 0 35px rgba(200, 51, 255, 0.8);
+        }
+
+        /* --- Features Section --- */
+        .features-section {
+            padding: 6rem 3rem;
+            background-color: var(--dark-bg);
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .features-section h2 {
+            font-size: 3rem;
+            color: var(--accent-purple);
+            margin-bottom: 4rem;
+            text-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+            font-weight: 700;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-item {
+            background-color: var(--dark-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(157, 0, 255, 0.4);
+        }
+
+        .feature-item .icon {
+            font-size: 3.5rem;
+            color: var(--accent-purple);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.4);
+        }
+
+        .feature-item h3 {
+            font-size: 1.8rem;
+            color: var(--text-color);
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-item p {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        /* --- Screenshots Section (Optional) --- */
+        .screenshots-section {
+            padding: 6rem 3rem;
+            background-color: var(--dark-bg);
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .screenshots-section h2 {
+            font-size: 3rem;
+            color: var(--accent-purple);
+            margin-bottom: 4rem;
+            text-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+            font-weight: 700;
+        }
+
+        .screenshot-gallery {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .screenshot-gallery img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 12px;
+            border: 2px solid var(--accent-purple);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .screenshot-gallery img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(200, 51, 255, 0.7);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: var(--dark-bg);
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .footer .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer .footer-links a:hover {
+            color: var(--accent-purple);
+        }
+
+        .footer .social-icons {
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .footer .social-icons a {
+            color: #aaa;
+            font-size: 1.8rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .footer .social-icons a:hover {
+            color: var(--accent-purple);
+            transform: translateY(-3px);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 900px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem 2rem;
+            }
+            .navbar .nav-links,
+            .navbar .auth-buttons {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+            .hero-section h1 {
+                font-size: 3.5rem;
+            }
+            .hero-section p {
+                font-size: 1.5rem;
+            }
+            .hero-section .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1.2rem;
+            }
+            .features-section, .screenshots-section {
+                padding: 4rem 2rem;
+            }
+            .features-section h2, .screenshots-section h2 {
+                font-size: 2.5rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .feature-item {
+                padding: 2rem;
+            }
+            /* Adjust custom cursor for smaller screens if 50vmax is too big */
+            .custom-cursor {
+                width: 70vmax; /* Larger on smaller screens for more impact */
+                height: 70vmax;
+                filter: blur(60px); /* Adjust blur */
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 1rem;
+            }
+            .navbar .logo {
+                font-size: 1.8rem;
+            }
+            .navbar .nav-links,
+            .navbar .auth-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero-section h1 {
+                font-size: 2.5rem;
+            }
+            .hero-section p {
+                font-size: 1.2rem;
+            }
+            .hero-section .cta-button {
+                font-size: 1rem;
+            }
+            .features-section, .screenshots-section {
+                padding: 3rem 1rem;
+            }
+            .features-section h2, .screenshots-section h2 {
+                font-size: 2rem;
+            }
+            .footer {
+                padding: 2rem 1rem;
+            }
+            .custom-cursor {
+                width: 80vmax; /* Even larger on very small screens */
+                height: 80vmax;
+                filter: blur(50px); /* Adjust blur */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div> 
+    <div class="custom-cursor"></div> 
+
+    <header class="navbar">
+        <a href="#hero" class="logo">Pixory</a>
+        <nav class="nav-links">
+            <a href="#hero">Home</a>
+            <a href="#features">About</a>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn btn-login">Login</a>
+            <a href="signup.html" class="btn btn-signup">Sign Up</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="hero-section">
+            <h1>Welcome to Pixory</h1>
+            <p>Your digital gallery for every trip. Relive, organize, and share your adventures like never before.</p>
+            <a href="signup.html" class="cta-button">Get Started</a>
+        </section>
+
+        <section id="features" class="features-section">
+            <h2>Features That Inspire</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-folder"></i></div>
+                    <h3>Trip Folders</h3>
+                    <p>Organize your photos and videos effortlessly by trip, event, or theme.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-user-friends"></i></div>
+                    <h3>Share with Friends</h3>
+                    <p>Invite family and friends to view, contribute, and collaborate on your galleries.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-comments"></i></div>
+                    <h3>Chat & React</h3>
+                    <p>Interact in real-time with comments and reactions directly within your albums.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="icon"><i class="fas fa-paint-brush"></i></div>
+                    <h3>Art Gallery Feel</h3>
+                    <p>Experience your memories in an elegant, full-screen viewing environment.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="screenshots" class="screenshots-section">
+            <h2>A Glimpse Inside Pixory</h2>
+            <div class="screenshot-gallery">
+                <img src="placeholder_gallery1.jpg" alt="Pixory Trip Gallery View">
+                <img src="placeholder_gallery2.jpg" alt="Pixory Photo Sharing Interface">
+                </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>&copy; 2025 Pixory. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const customCursor = document.querySelector('.custom-cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+
+        // Optional: Hide custom cursor when mouse leaves the document
+        document.addEventListener('mouseleave', () => {
+            customCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            customCursor.style.opacity = '0.15'; /* Restore initial opacity */
+        });
+        
+        // Removed the individual element hover effects, as the large cursor is a general follower effect.
+    </script>
+</body>
+</html>
