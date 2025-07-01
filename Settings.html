@@ -158,13 +158,14 @@
         }
 
         /* --- Settings Container (MAIN CHANGE FOR ROW LAYOUT) --- */
+        /* --- Settings Container (MAIN CHANGE FOR ROW LAYOUT) --- */
         .settings-container {
             min-height: calc(100vh - 100px);
             display: flex;
             flex-direction: row; /* Changed to row for horizontal layout */
             flex-wrap: wrap; /* Allows cards to wrap to the next line */
             justify-content: center; /* Centers cards horizontally */
-            align-items: flex-start; /* Aligns cards to the top of the row */
+            align-items: stretch; /* CHANGED: Makes all cards in a row the same height */
             gap: 3rem; /* Space between cards horizontally and vertically */
             padding: 4rem 2rem; /* Overall padding for the container */
         }
