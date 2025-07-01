@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixory - Settings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic Resets & Global Styles */
+        :root {
+            --dark-bg: #000; /* Pure black */
+            --text-color: #f0f0f0;
+            --accent-purple: #9d00ff;
+            --accent-purple-hover: #c833ff;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --grid-spacing: 50px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at center, rgba(157, 0, 255, 0.05) 0%, transparent 70%);
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- HUGE Custom Cursor (Light Follower) --- */
+        .custom-cursor {
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle at center, var(--accent-purple) 0%, transparent 70%);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease-out, opacity 0.2s ease-out;
+            opacity: 0.15;
+            filter: blur(80px);
+        }
+
+        /* --- Global Grid Background --- */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+            background-size: var(--grid-spacing) var(--grid-spacing);
+            z-index: -1;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+        
+        /* --- Navbar (Slightly simplified for internal pages) --- */
+        .navbar {
+            background-color: var(--dark-bg);
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 2rem; /* Adjusted font size */
+            font-weight: bold;
+            color: var(--accent-purple);
+            text-decoration: none;
+            letter-spacing: -0.05em;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 2rem; /* Adjusted gap */
+        }
+
+        .navbar .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem; /* Adjusted font size */
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        .navbar .nav-links a:hover {
+            color: var(--accent-purple-hover);
+            transform: translateY(-2px);
+        }
+        
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: var(--accent-purple);
+            transition: width 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+            background: var(--accent-purple-hover);
+        }
+
+        /* Adjustments for buttons in navbar, if any exist */
+        .navbar .auth-buttons .btn {
+            font-size: 0.95rem; /* Adjusted font size */
+        }
+
+        /* --- Hero Section (Styles if this file was index.html) --- */
+        .hero-section h1 {
+            font-size: 3.5rem; /* Adjusted font size */
+        }
+
+        .hero-section p {
+            font-size: 1.4rem; /* Adjusted font size */
+        }
+
+        .hero-section .cta-button {
+            font-size: 1.2rem; /* Adjusted font size */
+        }
+
+        /* --- Features Section (Styles if this file was index.html) --- */
+        .features-section h2, .screenshots-section h2 {
+            font-size: 2.5rem; /* Adjusted font size */
+        }
+        .feature-item h3 {
+            font-size: 1.6rem; /* Adjusted font size */
+        }
+        .feature-item p {
+            font-size: 1rem; /* Adjusted font size */
+        }
+
+        /* --- Settings Container (MAIN CHANGE FOR ROW LAYOUT) --- */
+        .settings-container {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            flex-direction: row; /* Changed to row for horizontal layout */
+            flex-wrap: wrap; /* Allows cards to wrap to the next line */
+            justify-content: center; /* Centers cards horizontally */
+            align-items: flex-start; /* Aligns cards to the top of the row */
+            gap: 3rem; /* Space between cards horizontally and vertically */
+            padding: 4rem 2rem; /* Overall padding for the container */
+        }
+
+        /* --- Settings Box (Card style) --- */
+        .settings-box {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2.5rem 3.5rem; /* Slightly reduced padding */
+            width: 100%; /* Default to full width on smallest screens */
+            max-width: 450px; /* Max width for each card, allows for 2-column layout */
+            box-shadow: 0 0 30px rgba(157, 0, 255, 0.3);
+            text-align: center;
+            /* margin-bottom removed as gap handles spacing */
+        }
+
+        .settings-box h2 {
+            font-size: 2rem; /* Adjusted font size */
+            color: var(--accent-purple);
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+            text-align: center;
+        }
+
+        /* --- Profile Photo Specific Styles --- */
+        .profile-photo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem; /* Space below the photo and controls */
+        }
+
+        .profile-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-purple);
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(200, 51, 255, 0.7);
+        }
+
+        .upload-controls {
+            display: flex;
+            flex-direction: column; /* Stack buttons vertically on small screens */
+            gap: 1rem;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        /* --- Form Group & Input Styles --- */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-size: 1rem; /* Adjusted font size */
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 0.9rem 1.1rem; /* Adjusted padding */
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 0.95rem; /* Adjusted font size */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="password"]:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 10px rgba(157, 0, 255, 0.7);
+        }
+
+        /* --- Button Styles --- */
+        .form-actions {
+            margin-top: 2rem; /* Adjusted margin */
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem; /* Adjusted gap */
+        }
+
+        .btn {
+            display: block;
+            padding: 0.9rem 1.8rem; /* Adjusted padding */
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem; /* Adjusted font size */
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-purple);
+            color: var(--dark-bg);
+            box-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-purple-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(200, 51, 255, 0.7);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--accent-purple);
+            border: 2px solid var(--accent-purple);
+            padding: 0.8rem 1.5rem;
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--accent-purple);
+            color: var(--dark-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        }
+
+        /* --- Footer --- */
+        .footer {
+            background-color: var(--dark-bg);
+            padding: 1.5rem; /* Adjusted padding */
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            color: #aaa;
+            font-size: 0.85rem; /* Adjusted font size */
+        }
+
+        .footer .footer-links a {
+            color: #aaa;
+            text-decoration: none;
+            margin: 0 0.8rem; /* Adjusted margin */
+            transition: color 0.3s ease;
+        }
+
+        .footer .footer-links a:hover {
+            color: var(--accent-purple);
+        }
+
+        .footer .social-icons {
+            margin: 1rem 0;
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem; /* Adjusted gap */
+        }
+
+        .footer .social-icons a {
+            color: #aaa;
+            font-size: 1.5rem; /* Adjusted font size */
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .footer .social-icons a:hover {
+            color: var(--accent-purple);
+            transform: translateY(-3px);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 1000px) { /* For screens where two cards might fit */
+            .settings-box {
+                max-width: 45%; /* Allows two cards side-by-side with gap */
+                min-width: 300px; /* Prevents cards from becoming too narrow */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            .navbar .nav-links {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+            .settings-container {
+                flex-direction: column; /* Stack cards vertically on smaller screens */
+                gap: 2rem; /* Adjust gap for stacked layout */
+            }
+            .settings-box {
+                max-width: 90%; /* Take up more width when stacked */
+                padding: 2rem;
+            }
+            .settings-box h2 {
+                font-size: 1.8rem; /* Adjusted font size */
+            }
+            .form-group label {
+                font-size: 0.9rem; /* Adjusted font size */
+            }
+            .btn {
+                font-size: 1rem; /* Adjusted font size */
+                padding: 0.7rem 1.2rem; /* Adjusted padding */
+            }
+            .custom-cursor {
+                width: 70vmax;
+                height: 70vmax;
+                filter: blur(60px);
+            }
+            .upload-controls {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .logo {
+                font-size: 1.6rem; /* Adjusted font size */
+            }
+            .settings-container {
+                padding: 2rem 1rem;
+            }
+            .settings-box {
+                padding: 1.5rem;
+                max-width: 100%; /* Full width on very small screens */
+            }
+            .settings-box h2 {
+                font-size: 1.6rem; /* Adjusted font size */
+            }
+            .form-group input {
+                padding: 0.7rem 0.9rem; /* Adjusted padding */
+            }
+            .custom-cursor {
+                width: 80vmax;
+                height: 80vmax;
+                filter: blur(50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div> 
+    <div class="custom-cursor"></div> 
+
+    <header class="navbar">
+        <a href="index.html" class="logo">Pixory</a> <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="#profile-photo-settings">Photo</a>
+            <a href="#profile-settings">Profile</a>
+            <a href="#password-settings">Password</a>
+        </nav>
+    </header>
+
+    <main class="settings-container">
+        <div id="profile-photo-settings" class="settings-box">
+            <h2>Profile Photo</h2>
+            <div class="profile-photo-area">
+                <img id="currentProfilePhoto" src="https://via.placeholder.com/150/9d00ff/000000?text=Your+Photo" alt="Current Profile Photo" class="profile-photo">
+                <div class="upload-controls">
+                    <input type="file" id="profilePhotoUpload" accept="image/*" style="display: none;">
+                    <label for="profilePhotoUpload" class="btn btn-secondary">Choose New Photo</label>
+                    <button type="button" class="btn btn-primary">Save Photo</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="profile-settings" class="settings-box">
+            <h2>Update Profile</h2>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" value="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" value="john.doe@example.com" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="password-settings" class="settings-box">
+            <h2>Change Password</h2>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewPassword">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" name="confirmNewPassword" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>&copy; 2025 Pixory. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // JavaScript for Profile Photo Preview
+            const profilePhotoUpload = document.getElementById('profilePhotoUpload');
+            const currentProfilePhoto = document.getElementById('currentProfilePhoto');
+
+            if (profilePhotoUpload && currentProfilePhoto) {
+                profilePhotoUpload.addEventListener('change', (event) => {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            currentProfilePhoto.src = e.target.result; // Update image src with selected file
+                        };
+                        reader.readAsDataURL(file); // Read the selected file as a data URL
+                    }
+                });
+            }
+
+            // Custom Cursor JavaScript
+            const customCursor = document.querySelector('.custom-cursor');
+
+            document.addEventListener('mousemove', (e) => {
+                customCursor.style.left = e.clientX + 'px';
+                customCursor.style.top = e.clientY + 'px';
+            });
+
+            document.addEventListener('mouseleave', () => {
+                customCursor.style.opacity = '0';
+            });
+
+            document.addEventListener('mouseenter', () => {
+                customCursor.style.opacity = '0.15';
+            });
+        });
+    </script>
+</body>
+</html>
