@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixory - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic Resets & Global Styles */
+        :root {
+            --dark-bg: #000; /* Pure black */
+            --text-color: #e0e0e0; /* Slightly darker text for smaller fonts */
+            --accent-purple: #9d00ff;
+            --accent-purple-hover: #c833ff;
+            --border-color: rgba(255, 255, 255, 0.1); /* Slightly less prominent border */
+            --grid-spacing: 50px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            background-image: radial-gradient(circle at center, rgba(157, 0, 255, 0.05) 0%, transparent 70%);
+            background-repeat: no-repeat;
+            background-position: center center;
+            color: var(--text-color);
+            line-height: 1.5; /* Slightly tighter line height for smaller fonts */
+            overflow-x: hidden;
+            position: relative;
+            font-size: 0.875rem; /* Base font size for the dashboard - smaller */
+        }
+
+        /* --- HUGE Custom Cursor (Light Follower) --- */
+        .custom-cursor {
+            width: 50vmax;
+            height: 50vmax;
+            background: radial-gradient(circle at center, var(--accent-purple) 0%, transparent 70%);
+            border-radius: 50%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease-out, opacity 0.2s ease-out;
+            opacity: 0.15;
+            filter: blur(80px);
+        }
+
+        /* --- Global Grid Background --- */
+        .grid-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+            background-size: var(--grid-spacing) var(--grid-spacing);
+            z-index: -1;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+        
+        /* --- Navbar --- */
+        .navbar {
+            background-color: var(--dark-bg);
+            padding: 1rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.8rem; /* Smaller font size for dashboard */
+            font-weight: bold;
+            color: var(--accent-purple);
+            text-decoration: none;
+            letter-spacing: -0.05em;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 1.5rem; /* Adjusted gap */
+        }
+
+        .navbar .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem; /* Smaller font size for dashboard */
+            transition: color 0.3s ease, transform 0.2s ease;
+            position: relative;
+        }
+
+        .navbar .nav-links a:hover {
+            color: var(--accent-purple-hover);
+            transform: translateY(-2px);
+        }
+        
+        .navbar .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            display: block;
+            margin-top: 5px;
+            right: 0;
+            background: var(--accent-purple);
+            transition: width 0.3s ease;
+        }
+
+        .navbar .nav-links a:hover::after {
+            width: 100%;
+            left: 0;
+            background: var(--accent-purple-hover);
+        }
+
+        /* Adjustments for buttons in navbar, if any exist */
+        .navbar .auth-buttons .btn {
+            font-size: 0.95rem; /* Adjusted font size */
+        }
+
+        /* --- Hero Section (Styles if this file was index.html) --- */
+        .hero-section h1 {
+            font-size: 3.5rem; /* Adjusted font size */
+        }
+
+        .hero-section p {
+            font-size: 1.4rem; /* Adjusted font size */
+        }
+
+        .hero-section .cta-button {
+            font-size: 1.2rem; /* Adjusted font size */
+        }
+
+        /* --- Features Section (Styles if this file was index.html) --- */
+        .features-section h2, .screenshots-section h2 {
+            font-size: 2.5rem; /* Adjusted font size */
+        }
+        .feature-item h3 {
+            font-size: 1.6rem; /* Adjusted font size */
+        }
+        .feature-item p {
+            font-size: 1rem; /* Adjusted font size */
+        }
+
+        /* --- Dashboard Layout --- */
+        .dashboard-wrapper {
+            display: flex;
+            min-height: calc(100vh - 80px); /* Adjust for navbar height */
+            padding-top: 1px; /* Small padding to prevent margin collapse with navbar */
+        }
+
+        /* --- Sidebar --- */
+        .sidebar {
+            width: 250px;
+            background-color: rgba(0, 0, 0, 0.4); /* Slightly lighter dark background */
+            border-right: 1px solid var(--border-color);
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem; /* Tighter spacing for sidebar links */
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 0.8rem 2rem;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.95rem; /* Smaller sidebar font */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: rgba(157, 0, 255, 0.1);
+            color: var(--accent-purple);
+            border-left-color: var(--accent-purple);
+        }
+
+        .sidebar .sidebar-heading {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin: 1.5rem 2rem 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- Main Dashboard Content --- */
+        .main-dashboard-content {
+            flex-grow: 1; /* Takes remaining space */
+            padding: 2.5rem; /* Reduced padding */
+            display: flex;
+            flex-direction: column;
+            gap: 2rem; /* Gap between sections */
+        }
+
+        .dashboard-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.2rem; /* Smaller main heading */
+            color: var(--accent-purple);
+            text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive grid columns */
+            gap: 1.5rem; /* Gap between widgets */
+        }
+
+        /* --- Dashboard Widget (Card style) --- */
+        .dashboard-widget {
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+            border: 1px solid var(--border-color);
+            border-radius: 10px; /* Slightly smaller radius */
+            padding: 1.5rem; /* Reduced padding */
+            box-shadow: 0 0 20px rgba(157, 0, 255, 0.2); /* Less intense shadow */
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .dashboard-widget:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(157, 0, 255, 0.4);
+        }
+
+        .dashboard-widget h3 {
+            font-size: 1.3rem; /* Smaller widget title */
+            color: var(--accent-purple);
+            margin-bottom: 0.8rem;
+        }
+
+        .dashboard-widget p {
+            font-size: 0.9rem; /* Smaller paragraph text */
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-widget .metric {
+            font-size: 2.5rem; /* Metric value still stands out */
+            font-weight: bold;
+            color: var(--accent-purple-hover);
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-widget .sub-text {
+            font-size: 0.75rem; /* Even smaller for secondary text */
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* --- Responsive Adjustments --- */
+        @media (max-width: 992px) {
+            .dashboard-wrapper {
+                flex-direction: column; /* Stack sidebar and content */
+            }
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 1rem 0;
+                flex-direction: row; /* Make sidebar links horizontal */
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.8rem;
+            }
+            .sidebar a {
+                padding: 0.6rem 1rem;
+                border-left: none; /* Remove left border */
+                border-bottom: 3px solid transparent; /* Add bottom border for active state */
+            }
+            .sidebar a:hover, .sidebar a.active {
+                border-left-color: transparent;
+                border-bottom-color: var(--accent-purple);
+            }
+            .sidebar .sidebar-heading {
+                display: none; /* Hide heading on mobile sidebar */
+            }
+            .main-dashboard-content {
+                padding: 1.5rem;
+            }
+            .dashboard-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            .navbar .logo {
+                font-size: 1.6rem;
+            }
+            .navbar .nav-links {
+                gap: 0.8rem;
+            }
+            .navbar .nav-links a {
+                font-size: 0.8rem;
+            }
+            .dashboard-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adjust for smaller screens */
+            }
+            .dashboard-widget {
+                padding: 1.2rem;
+            }
+            .dashboard-widget h3 {
+                font-size: 1.1rem;
+            }
+            .dashboard-widget .metric {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                font-size: 0.8rem; /* Even smaller base font */
+            }
+            .navbar .logo {
+                font-size: 1.4rem;
+            }
+            .main-dashboard-content {
+                padding: 1rem;
+            }
+            .dashboard-header h1 {
+                font-size: 1.5rem;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+            }
+            .dashboard-widget {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-background"></div> 
+    <div class="custom-cursor"></div> 
+
+    <header class="navbar">
+        <a href="index.html" class="logo">Pixory</a> <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="settings.html">Settings</a>
+            <a href="dashboard.html" class="active">Dashboard</a> <a href="user_main_page.html">My Photos</a> </nav>
+    </header>
+
+    <div class="dashboard-wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-heading">Main Navigation</div>
+            <a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Overview</a>
+            <a href="#"><i class="fas fa-chart-line"></i> Analytics</a>
+            <a href="#"><i class="fas fa-users"></i> Users</a>
+            <a href="#"><i class="fas fa-file-alt"></i> Reports</a>
+            <a href="#"><i class="fas fa-cogs"></i> Integrations</a>
+            <div class="sidebar-heading">Account</div>
+            <a href="settings.html"><i class="fas fa-user-circle"></i> Profile Settings</a>
+            <a href="#"><i class="fas fa-question-circle"></i> Support</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </aside>
+
+        <main class="main-dashboard-content">
+            <div class="dashboard-header">
+                <h1>Dashboard Overview</h1>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-widget">
+                    <h3>Total Sales</h3>
+                    <p class="metric">$12,345</p>
+                    <p class="sub-text">Up 12% from last month</p>
+                </div>
+
+                <div class="dashboard-widget">
+                    <h3>New Users</h3>
+                    <p class="metric">87</p>
+                    <p class="sub-text">+5 today</p>
+                </div>
+
+                <div class="dashboard-widget">
+                    <h3>Page Views</h3>
+                    <p class="metric">98,765</p>
+                    <p class="sub-text">Daily average</p>
+                </div>
+
+                <div class="dashboard-widget">
+                    <h3>Active Projects</h3>
+                    <p class="metric">14</p>
+                    <p class="sub-text">3 new this week</p>
+                </div>
+
+                <div class="dashboard-widget">
+                    <h3>Disk Usage</h3>
+                    <p class="metric">75%</p>
+                    <p class="sub-text">25 GB Free</p>
+                </div>
+
+                <div class="dashboard-widget">
+                    <h3>Support Tickets</h3>
+                    <p class="metric">3 Open</p>
+                    <p class="sub-text">Last ticket 1 hour ago</p>
+                </div>
+            </div>
+
+            <section class="dashboard-section">
+                <h2>Recent Activity</h2>
+                <div class="dashboard-widget">
+                    <p><strong>John Doe</strong> uploaded a new image to <strong>Project X</strong>. <span class="sub-text">5 mins ago</span></p>
+                    <p><strong>Jane Smith</strong> commented on <strong>Report Y</strong>. <span class="sub-text">15 mins ago</span></p>
+                    <p><strong>System Update</strong> applied successfully. <span class="sub-text">1 hour ago</span></p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Custom Cursor JavaScript (Copied from main page)
+        const customCursor = document.querySelector('.custom-cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            customCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            customCursor.style.opacity = '0.15';
+        });
+    </script>
+</body>
+</html>
