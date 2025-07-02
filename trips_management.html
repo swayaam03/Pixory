@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixory - Trip Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="trips_management.css"> 
+</head>
+<body>
+    <div class="grid-background"></div> 
+    <div class="custom-cursor"></div> 
+
+    <header class="navbar">
+        <a href="index.html" class="logo">Pixory</a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="settings.html">Settings</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="user_main_page.html">My Photos</a>
+            <a href="trips_management.html" class="active">My Trips</a> <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </header>
+
+    <main class="trips-main-content">
+        <section class="create-trip-section">
+            <h2><i class="fas fa-plus-circle"></i> Create New Trip</h2>
+            <form class="trip-form">
+                <div class="form-group">
+                    <label for="tripTitle">Trip Title</label>
+                    <input type="text" id="tripTitle" placeholder="e.g., European Adventure" required>
+                </div>
+                <div class="form-group">
+                    <label for="destination">Destination</label>
+                    <input type="text" id="destination" placeholder="e.g., Paris, Rome, Berlin" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" id="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endDate">End Date</label>
+                        <input type="date" id="endDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tripDescription">Description</label>
+                    <textarea id="tripDescription" rows="5" placeholder="Tell us about your trip..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="coverPhoto">Trip Cover Photo (Optional)</label>
+                    <input type="file" id="coverPhoto" accept="image/*">
+                </div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Create Trip</button>
+            </form>
+        </section>
+
+        <section class="existing-trips-section">
+            <h2><i class="fas fa-plane"></i> Your Existing Trips</h2>
+            <div class="trip-gallery">
+                <div class="trip-card">
+                    <img src="https://via.placeholder.com/400x250/9d00ff/000000?text=Paris+Trip" alt="Paris Trip Cover">
+                    <div class="trip-info">
+                        <h3>Parisian Getaway</h3>
+                        <p class="destination"><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+                        <p class="dates"><i class="fas fa-calendar-alt"></i> Aug 1 - Aug 10, 2024</p>
+                        <p class="description">A romantic journey through the city of lights, visiting iconic landmarks.</p>
+                        <div class="trip-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i> View</button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-card">
+                    <img src="https://via.placeholder.com/400x250/5a00e5/000000?text=Hiking+Trip" alt="Hiking Trip Cover">
+                    <div class="trip-info">
+                        <h3>Mountain Hiking Adventure</h3>
+                        <p class="destination"><i class="fas fa-map-marker-alt"></i> Alps, Switzerland</p>
+                        <p class="dates"><i class="fas fa-calendar-alt"></i> Sep 5 - Sep 12, 2024</p>
+                        <p class="description">Challenging trails, breathtaking views, and fresh mountain air.</p>
+                        <div class="trip-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i> View</button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="trip-card">
+                    <img src="https://via.placeholder.com/400x250/7b00ff/000000?text=Beach+Escape" alt="Beach Escape Cover">
+                    <div class="trip-info">
+                        <h3>Tropical Beach Escape</h3>
+                        <p class="destination"><i class="fas fa-map-marker-alt"></i> Maldives</p>
+                        <p class="dates"><i class="fas fa-calendar-alt"></i> Nov 1 - Nov 7, 2024</p>
+                        <p class="description">Relaxing on white sands, clear waters, and stunning sunsets.</p>
+                        <div class="trip-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i> View</button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i> Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="social-icons">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <p>&copy; 2025 Pixory. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Custom Cursor JavaScript (Copied from other pages)
+        const customCursor = document.querySelector('.custom-cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            customCursor.style.opacity = '0';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            customCursor.style.opacity = '0.15';
+        });
+
+        // Basic form submission alert (for demonstration)
+        document.querySelector('.trip-form').addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent actual form submission
+            alert('Trip created successfully! (This is a demo, no actual data saved.)');
+            // In a real app, you would send this data to a backend.
+            event.target.reset(); // Clear the form
+        });
+    </script>
+</body>
+</html>
