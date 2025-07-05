@@ -1,0 +1,512 @@
+/* view_trip.css */
+
+/* Basic Resets & Global Styles */
+:root {
+    --dark-bg: #000;
+    --text-color: #f0f0f0;
+    --accent-purple: #9d00ff;
+    --accent-purple-hover: #c833ff;
+    --border-color: rgba(255, 255, 255, 0.15);
+    --grid-spacing: 50px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--dark-bg);
+    background-image: radial-gradient(circle at center, rgba(157, 0, 255, 0.05) 0%, transparent 70%);
+    background-repeat: no-repeat;
+    background-position: center center;
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+    position: relative;
+    font-size: 1rem;
+}
+
+/* --- HUGE Custom Cursor (Light Follower) --- */
+.custom-cursor {
+    width: 50vmax;
+    height: 50vmax;
+    background: radial-gradient(circle at center, var(--accent-purple) 0%, transparent 70%);
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s ease-out, opacity 0.2s ease-out;
+    opacity: 0.15;
+    filter: blur(80px);
+}
+
+/* --- Global Grid Background --- */
+.grid-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(to right, var(--border-color) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+    background-size: var(--grid-spacing) var(--grid-spacing);
+    z-index: -1;
+    opacity: 0.2;
+    pointer-events: none;
+}
+
+/* --- Navbar (Consistent) --- */
+.navbar {
+    background-color: var(--dark-bg);
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar .logo {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--accent-purple);
+    text-decoration: none;
+    letter-spacing: -0.05em;
+}
+
+.navbar .nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.navbar .nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+    position: relative;
+}
+
+.navbar .nav-links a:hover {
+    color: var(--accent-purple-hover);
+    transform: translateY(-2px);
+}
+
+.navbar .nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    display: block;
+    margin-top: 5px;
+    right: 0;
+    background: var(--accent-purple);
+    transition: width 0.3s ease;
+}
+
+.navbar .nav-links a:hover::after {
+    width: 100%;
+    left: 0;
+    background: var(--accent-purple-hover);
+}
+
+/* --- Main Content Area for View Trip Page --- */
+.view-trip-content {
+    min-height: calc(100vh - 160px); /* Adjust for navbar and footer height */
+    padding-bottom: 3rem; /* Padding at bottom for overall content */
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem; /* Space between sections */
+}
+
+/* --- Trip Details Header Section --- */
+.trip-details-header {
+    position: relative;
+    width: 100%;
+    height: 400px; /* Adjust height as needed */
+    overflow: hidden;
+    border-radius: 0 0 15px 15px; /* Rounded bottom corners */
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+}
+
+.trip-cover-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.6) blur(2px); /* Darken and blur for overlay text */
+    transform: scale(1.02); /* Slight scale to hide blur edges */
+}
+
+.trip-info-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Align content to bottom */
+    padding: 2rem 3rem;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+.breadcrumb {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 1rem;
+}
+
+.breadcrumb a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--accent-purple-hover);
+}
+
+.breadcrumb .fas {
+    margin: 0 0.5rem;
+    font-size: 0.8em;
+}
+
+.trip-info-overlay h1 {
+    font-size: 3.5rem;
+    color: var(--accent-purple-hover);
+    margin-bottom: 0.8rem;
+    text-shadow: 0 0 15px rgba(157, 0, 255, 0.8);
+}
+
+.trip-info-overlay .destination,
+.trip-info-overlay .dates {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+}
+
+.trip-info-overlay .fas {
+    margin-right: 0.6rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.trip-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* --- Buttons (consistent) --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    border: none;
+    gap: 0.6rem;
+}
+
+.btn-primary { /* Used for main CTA, not on this page's header usually */
+    background-color: var(--accent-purple);
+    color: var(--dark-bg);
+    box-shadow: 0 0 15px rgba(157, 0, 255, 0.5);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-purple-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px rgba(200, 51, 255, 0.7);
+}
+
+.btn-secondary {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(157, 0, 255, 0.2);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(157, 0, 255, 0.3);
+    color: var(--accent-purple-hover);
+    border-color: var(--accent-purple-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 0 15px rgba(200, 51, 255, 0.4);
+}
+
+.btn-secondary.delete-btn {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.3);
+    color: #ff6b6b;
+}
+
+.btn-secondary.delete-btn:hover {
+    background-color: rgba(255, 0, 0, 0.3);
+    border-color: #ff6b6b;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    color: #ff6b6b;
+}
+
+/* --- Content Card Style (for description and photo gallery sections) --- */
+.content-card {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 2.5rem 3rem;
+    box-shadow: 0 0 25px rgba(157, 0, 255, 0.25);
+}
+
+.content-card h2 {
+    font-size: 2rem;
+    color: var(--accent-purple);
+    text-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+    margin-bottom: 1.5rem;
+}
+
+.trip-description-section p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* --- Trip Photo Gallery --- */
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    padding-top: 1rem; /* Space between title and first row of photos */
+}
+
+.gallery-photo-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.gallery-photo-item:hover {
+    transform: translateY(-5px);
+}
+
+.gallery-photo-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.gallery-photo-item:hover img {
+    transform: scale(1.05);
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 1rem;
+    text-align: center;
+}
+
+.gallery-photo-item:hover .photo-overlay {
+    opacity: 1;
+}
+
+.photo-overlay p {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.8rem;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+.view-photo-btn {
+    background-color: var(--accent-purple);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 10px rgba(157, 0, 255, 0.5);
+}
+
+.view-photo-btn:hover {
+    background-color: var(--accent-purple-hover);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(200, 51, 255, 0.7);
+}
+
+/* --- Footer (Consistent) --- */
+.footer {
+    background-color: var(--dark-bg);
+    padding: 1.5rem;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+.footer .footer-links a {
+    color: #aaa;
+    text-decoration: none;
+    margin: 0 0.8rem;
+    transition: color 0.3s ease;
+}
+
+.footer .footer-links a:hover {
+    color: var(--accent-purple);
+}
+
+.footer .social-icons {
+    margin: 1rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+}
+
+.footer .social-icons a {
+    color: #aaa;
+    font-size: 1.5rem;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.footer .social-icons a:hover {
+    color: var(--accent-purple);
+    transform: translateY(-3px);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 992px) {
+    .view-trip-content {
+        padding-top: 0; /* Remove top padding if header takes full width */
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+        gap: 2.5rem;
+    }
+    .trip-info-overlay {
+        padding: 1.5rem 2rem;
+    }
+    .trip-info-overlay h1 {
+        font-size: 2.8rem;
+    }
+    .trip-actions {
+        flex-direction: column; /* Stack buttons on smaller screens */
+        gap: 0.8rem;
+    }
+    .btn-secondary {
+        width: 100%; /* Make buttons full width */
+    }
+    .content-card {
+        padding: 2rem 2.5rem;
+    }
+    .content-card h2 {
+        font-size: 1.8rem;
+    }
+    .photo-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .navbar .nav-links {
+        margin-top: 1rem;
+        gap: 0.8rem;
+    }
+    .navbar .nav-links a {
+        font-size: 0.9rem;
+    }
+    .trip-details-header {
+        height: 300px; /* Smaller height for header */
+    }
+    .trip-info-overlay h1 {
+        font-size: 2.2rem;
+    }
+    .trip-info-overlay .destination,
+    .trip-info-overlay .dates {
+        font-size: 1rem;
+    }
+    .content-card {
+        padding: 1.5rem 1.5rem;
+    }
+    .content-card h2 {
+        font-size: 1.6rem;
+    }
+    .trip-description-section p {
+        font-size: 0.95rem;
+    }
+    .photo-grid {
+        grid-template-columns: 1fr; /* Single column on small screens */
+    }
+    .gallery-photo-item img {
+        height: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar .logo {
+        font-size: 1.6rem;
+    }
+    .trip-details-header {
+        border-radius: 0; /* No border-radius on very small screens */
+    }
+    .trip-info-overlay {
+        padding: 1rem 1.2rem;
+    }
+    .trip-info-overlay h1 {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+    }
+    .trip-info-overlay .destination,
+    .trip-info-overlay .dates {
+        font-size: 0.9rem;
+    }
+    .trip-actions {
+        margin-top: 1.5rem;
+    }
+    .content-card {
+        padding: 1.2rem;
+    }
+}
