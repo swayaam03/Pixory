@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pixory - My Photos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="User_main.css"> 
+    <link rel="stylesheet" href="User_main.css">
 </head>
 <body>
-    <div class="grid-background"></div> 
-    <div class="custom-cursor"></div> 
+    <div class="grid-background"></div>
+    <div class="custom-cursor"></div>
 
     <header class="navbar">
         <a href="index.html" class="logo">Pixory</a>
@@ -17,71 +17,157 @@
             <a href="index.html">Home</a>
             <a href="settings.html">Settings</a>
             <a href="dashboard.html">Dashboard</a>
-            <a href="user_main_page.html" class="active">My Photos</a> <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <a href="User_main.html" class="active">My Photos</a> <a href="trips_management.html">My Trips</a>
+            <a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
         </nav>
     </header>
 
-    <main class="user-main-content">
-        <div class="user-header">
-            <h1>Welcome, John Doe!</h1>
-            <p class="subtitle">Here are your uploaded photos. Click to view or manage them.</p>
-            <button class="btn btn-primary upload-btn"><i class="fas fa-upload"></i> Upload New Photo</button>
+    <div class="main-content-wrapper">
+        <main class="user-main-content">
+            <div class="user-header">
+                <h1>Welcome, John Doe!</h1>
+                <p class="subtitle">Here are your uploaded photos. Click to view or manage them.</p>
+                <button class="btn btn-primary upload-btn"><i class="fas fa-upload"></i> Upload New Photo</button>
+            </div>
+
+            <section class="photo-gallery">
+                <div class="photo-card">
+                    <img src="https://via.placeholder.com/180x120/9d00ff/000000?text=Photo+1" alt="User Photo 1">
+                    <div class="photo-info">
+                        <h3>Sunset Over Mountains</h3>
+                        <p class="date">Uploaded: May 28, 2025</p>
+                        <div class="photo-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="photo-reactions">
+                        <span class="reaction-item"><i class="fas fa-heart"></i> <span class="reaction-count">12</span></span>
+                        <span class="reaction-item"><i class="fas fa-comment"></i> <span class="reaction-count">3</span></span>
+                        <span class="reaction-item"><i class="fas fa-share-alt"></i> Share</span>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://via.placeholder.com/180x120/5a00e5/000000?text=Photo+2" alt="User Photo 2">
+                    <div class="photo-info">
+                        <h3>City Lights at Night</h3>
+                        <p class="date">Uploaded: May 20, 2025</p>
+                        <div class="photo-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="photo-reactions">
+                        <span class="reaction-item"><i class="fas fa-heart"></i> <span class="reaction-count">25</span></span>
+                        <span class="reaction-item"><i class="fas fa-comment"></i> <span class="reaction-count">7</span></span>
+                        <span class="reaction-item"><i class="fas fa-share-alt"></i> Share</span>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://via.placeholder.com/180x120/7b00ff/000000?text=Photo+3" alt="User Photo 3">
+                    <div class="photo-info">
+                        <h3>Forest Pathway</h3>
+                        <p class="date">Uploaded: April 15, 2025</p>
+                        <div class="photo-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="photo-reactions">
+                        <span class="reaction-item"><i class="fas fa-heart"></i> <span class="reaction-count">8</span></span>
+                        <span class="reaction-item"><i class="fas fa-comment"></i> <span class="reaction-count">1</span></span>
+                        <span class="reaction-item"><i class="fas fa-share-alt"></i> Share</span>
+                    </div>
+                </div>
+
+                <div class="photo-card">
+                    <img src="https://via.placeholder.com/180x120/4c00d6/000000?text=Photo+4" alt="User Photo 4">
+                    <div class="photo-info">
+                        <h3>Abstract Art Piece</h3>
+                        <p class="date">Uploaded: March 10, 2025</p>
+                        <div class="photo-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="photo-reactions">
+                        <span class="reaction-item"><i class="fas fa-heart"></i> <span class="reaction-count">5</span></span>
+                        <span class="reaction-item"><i class="fas fa-comment"></i> <span class="reaction-count">0</span></span>
+                        <span class="reaction-item"><i class="fas fa-share-alt"></i> Share</span>
+                    </div>
+                </div>
+                <div class="photo-card">
+                    <img src="https://via.placeholder.com/180x120/9d00ff/000000?text=Photo+5" alt="User Photo 5">
+                    <div class="photo-info">
+                        <h3>Coastal View</h3>
+                        <p class="date">Uploaded: Feb 01, 2025</p>
+                        <div class="photo-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="photo-reactions">
+                        <span class="reaction-item"><i class="fas fa-heart"></i> <span class="reaction-count">18</span></span>
+                        <span class="reaction-item"><i class="fas fa-comment"></i> <span class="reaction-count">4</span></span>
+                        <span class="reaction-item"><i class="fas fa-share-alt"></i> Share</span>
+                    </div>
+                </div>
+                 <div class="photo-card">
+                    <img src="https://via.placeholder.com/180x120/5a00e5/000000?text=Photo+6" alt="User Photo 6">
+                    <div class="photo-info">
+                        <h3>Mountain Path</h3>
+                        <p class="date">Uploaded: Jan 10, 2025</p>
+                        <div class="photo-actions">
+                            <button class="icon-btn"><i class="fas fa-eye"></i></button>
+                            <button class="icon-btn"><i class="fas fa-edit"></i></button>
+                            <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="photo-reactions">
+                        <span class="reaction-item"><i class="fas fa-heart"></i> <span class="reaction-count">30</span></span>
+                        <span class="reaction-item"><i class="fas fa-comment"></i> <span class="reaction-count">10</span></span>
+                        <span class="reaction-item"><i class="fas fa-share-alt"></i> Share</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div> <aside class="trip-chat-sidebar">
+        <div class="chat-header">
+            <h3><i class="fas fa-comments"></i>Chat</h3>
         </div>
+        <div class="chat-participants">
 
-        <section class="photo-gallery">
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/300x200/9d00ff/000000?text=Photo+1" alt="User Photo 1">
-                <div class="photo-info">
-                    <h3>Sunset Over Mountains</h3>
-                    <p class="date">Uploaded: May 28, 2025</p>
-                    <div class="photo-actions">
-                        <button class="icon-btn"><i class="fas fa-eye"></i></button>
-                        <button class="icon-btn"><i class="fas fa-edit"></i></button>
-                        <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message received">
+                <span class="sender">Jane Smith:</span> Loving these new photos, John!
+                <span class="timestamp">12:01 PM</span>
             </div>
-
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/300x200/5a00e5/000000?text=Photo+2" alt="User Photo 2">
-                <div class="photo-info">
-                    <h3>City Lights at Night</h3>
-                    <p class="date">Uploaded: May 20, 2025</p>
-                    <div class="photo-actions">
-                        <button class="icon-btn"><i class="fas fa-eye"></i></button>
-                        <button class="icon-btn"><i class="fas fa-edit"></i></button>
-                        <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
+            <div class="message sent">
+                <span class="sender">You:</span> Thanks, Jane! Just uploaded them.
+                <span class="timestamp">12:02 PM</span>
             </div>
-
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/300x200/7b00ff/000000?text=Photo+3" alt="User Photo 3">
-                <div class="photo-info">
-                    <h3>Forest Pathway</h3>
-                    <p class="date">Uploaded: April 15, 2025</p>
-                    <div class="photo-actions">
-                        <button class="icon-btn"><i class="fas fa-eye"></i></button>
-                        <button class="icon-btn"><i class="fas fa-edit"></i></button>
-                        <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
+            <div class="message received">
+                <span class="sender">Robert Brown:</span> The "City Lights at Night" one is stunning!
+                <span class="timestamp">12:05 PM</span>
             </div>
-            
-            <div class="photo-card">
-                <img src="https://via.placeholder.com/300x200/4c00d6/000000?text=Photo+4" alt="User Photo 4">
-                <div class="photo-info">
-                    <h3>Abstract Art Piece</h3>
-                    <p class="date">Uploaded: March 10, 2025</p>
-                    <div class="photo-actions">
-                        <button class="icon-btn"><i class="fas fa-eye"></i></button>
-                        <button class="icon-btn"><i class="fas fa-edit"></i></button>
-                        <button class="icon-btn delete-btn"><i class="fas fa-trash-alt"></i></button>
-                    </div>
-                </div>
+             <div class="message received">
+                <span class="sender">Alice Wonderland:</span> Agreed, Robert! So vibrant.
+                <span class="timestamp">12:07 PM</span>
             </div>
-        </section>
-    </main>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Type your message...">
+            <button id="send-chat-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </aside>
 
     <footer class="footer">
         <div class="footer-links">
@@ -99,7 +185,7 @@
     </footer>
 
     <script>
-        // Custom Cursor JavaScript (Copied from other pages)
+        // Custom Cursor JavaScript
         const customCursor = document.querySelector('.custom-cursor');
 
         document.addEventListener('mousemove', (e) => {
@@ -118,7 +204,68 @@
         // Example: Add a click event for upload button (for demonstration)
         document.querySelector('.upload-btn').addEventListener('click', () => {
             alert('Upload photo feature coming soon!');
-            // In a real application, this would open a file dialog or navigate to an upload page
+        });
+
+        // Reaction button functionality (for demonstration)
+        document.querySelectorAll('.photo-reactions .reaction-item').forEach(item => {
+            item.addEventListener('click', (event) => {
+                const icon = item.querySelector('.fas');
+                const countSpan = item.querySelector('.reaction-count');
+                // const action = icon.classList.contains('fa-heart') ? 'liked' :
+                //                icon.classList.contains('fa-comment') ? 'commented on' :
+                //                'shared';
+                
+                let currentCount = countSpan ? parseInt(countSpan.textContent) : 0;
+
+                if (icon.classList.contains('fa-heart')) {
+                    // Toggle like
+                    if (icon.classList.contains('reacted')) {
+                        icon.classList.remove('reacted');
+                        countSpan.textContent = currentCount - 1;
+                        // alert('Unliked photo!'); // Removed alert for smoother UX
+                    } else {
+                        icon.classList.add('reacted');
+                        countSpan.textContent = currentCount + 1;
+                        // alert('Liked photo!'); // Removed alert for smoother UX
+                    }
+                } else if (icon.classList.contains('fa-comment')) {
+                    const comment = prompt("Enter your comment:");
+                    if (comment) {
+                        countSpan.textContent = currentCount + 1;
+                        // alert(`Comment added: "${comment}"`); // Removed alert
+                    }
+                } else {
+                    // alert(`Photo has been shared!`); // Removed alert
+                }
+            });
+        });
+
+        // --- Chat Functionality (Copied from previous view_trip.html response) ---
+        const chatInput = document.getElementById('chat-input');
+        const sendChatBtn = document.getElementById('send-chat-btn');
+        const chatMessages = document.getElementById('chat-messages');
+
+        function sendMessage() {
+            const messageText = chatInput.value.trim();
+            if (messageText === '') return; // Don't send empty messages
+
+            const now = new Date();
+            const timestamp = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'sent'); // Class for sent messages
+            messageDiv.innerHTML = `<span class="sender">You:</span> ${messageText}<span class="timestamp">${timestamp}</span>`;
+            
+            chatMessages.appendChild(messageDiv);
+            chatInput.value = ''; // Clear input field
+            chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+        }
+
+        sendChatBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
         });
     </script>
 </body>
