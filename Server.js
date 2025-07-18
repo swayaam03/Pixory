@@ -33,3 +33,29 @@ app.use('/api/trips', tripRoutes);
 app.listen(5000, () => {
   console.log('🌍 Server running on port 5000');
 });
+
+// server.js
+const express = require('express');
+const dotenv = require('dotenv');
+const cors = require('cors');
+
+const authRoutes = require('./routes/auth');
+const tripRoutes = require('./routes/trips');
+const db = require('./db');
+
+dotenv.config();
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/auth', authRoutes);
+app.use('/api/trips', tripRoutes);
+
+app.get('/', (req, res) => {
+    res.send('Pixory API is running');
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
